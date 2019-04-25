@@ -1,19 +1,18 @@
 import cv2
 import numpy as np
 
-
-
 def ColorNameFromHSV(image,y,x):
     # Create a table of HSV colour values and associated name as a lookup table
+    # Only really interested in Yellow and Red
     #ColorTable = [[14,23, "Orange"],[25,35, "Yellow"],[55,65,"Green"], [115,125,"Blue"], [175,5,"Red"]    ]
     ColorTable = [[25, 35, "Yellow"], [175, 5, "Red"]]
 
-    # get the HSV color
+    # get the HSV color tuple for the specified coordinate
     colorHSV = image[y,x]
     hue=colorHSV[0]
     saturation=colorHSV[1]
 
-    # Check that we have a strong coliur i.e. satuartion is great than 25
+    # Check that we have a strong coliur i.e. saturation is great than 25 to make sure we have a strong colour
     if saturation < 25:
         return"Unknown"
 
@@ -25,10 +24,11 @@ def ColorNameFromHSV(image,y,x):
      # Red is a special condition >175 but < than 5
     if hue >= 175 or hue <= 5:
         return("Red")
+    # If not in the lookup table return unknown
     return("Unknown")
 
 # Read in colour image in BGR colour space
-connect4BGR = cv2.imread("images/connect4 image 2.jpg")
+connect4BGR = cv2.imread("images/connect4 image 5.jpg")
 #print(connect4BGR.shape)
 #print(connect4BGR.size)
 #print(connect4BGR.dtype)
@@ -44,6 +44,7 @@ connect4BGR = cv2.resize(connect4BGR, (360, 640))
 connect4HSV = cv2.cvtColor(connect4BGR,cv2.COLOR_BGR2HSV)
 
 # Blur the image. This has the effect of hiding some small features such as the circle shapes on the counters which we don't want to detect
+# Note. I've experiemented with different values for the blur function and (5,5),2,2 seems the most reliable
 connect4_blurred = cv2.GaussianBlur(connect4BGR,(5,5),2,2)
 # Write blurred image
 cv2.imwrite("images/Connect4_blurred.jpg", connect4_blurred)
@@ -96,7 +97,7 @@ while guess_accumulator_array_threshold > 1 and breakout == False:
             circles = cv2.HoughCircles(gray,
                 cv2.HOUGH_GRADIENT,
                 dp=guess_dp,               #resolution of accumulator array.
-                minDist=20,                #chnaged from 100 to 20 number of pixels center of circles should be from each other, hardcode
+                minDist=20,                #changed from 100 to 20 number of pixels center of circles should be from each other, hardcode
                 param1=50,
                 param2=guess_accumulator_array_threshold,
                 minRadius=(guess_radius-3),    #HoughCircles will look for circles at minimum this size
@@ -114,8 +115,8 @@ while guess_accumulator_array_threshold > 1 and breakout == False:
                     print("Circles sorted: ", circles2)
                     circleLog.append(np.copy(circles2))
                     #print("CircleLog: ", circleLog)
-                    #print("dp = %f" % guess_dp)
-                    #print("param2 : %f" % guess_accumulator_array_threshold)
+                    print("dp = %f" % guess_dp)
+                    print("param2 : %f" % guess_accumulator_array_threshold)
                     print("min radius :  %f" % (guess_radius-3))
                     print("max radius : %f" % (guess_radius+3))
                     breakout = True
@@ -132,9 +133,15 @@ while guess_accumulator_array_threshold > 1 and breakout == False:
 
 #Return the circleLog with the highest accumulator threshold
 
+# Check we've found some circles and if not exit the program
+print("circleLog: ", circleLog)
+if len(circleLog) == 0 :
+    print("No circles detected")
+    exit(0)
+
 #lets try and reshape the circleLog[0] into a 6 x 7 x 3 numpy array
 circleLog[0] = np.reshape(circleLog[0],(7,6,3))
-#print("circleLog: ", circleLog)
+
 #print("length of circleLog[0]: ", len(circleLog[0]))
 #print("length of cicleLog: ", len(circleLog))
 
