@@ -179,14 +179,14 @@ for board in circleLog:
                 print("Circle %d is %s" % (circle_count, colorName))
                 colorLetter = "("+colorName[0]+")"
             else:
-                colorLetter="() "
+                colorLetter=" "
 
             #Draw a circle around each detected circle based on it's detected centre coordinates and radius
             # Then label each circle with a number
             cv2.circle(output, (x, y), r, (0, 0, 255), 2)
 
             circle_count_string="%s%s" % (circle_count,colorLetter)
-            cv2.putText(output, circle_count_string, (x-5,y), cv2.FONT_HERSHEY_SIMPLEX, 0.5,  (0,0,0), 2)
+            cv2.putText(output, circle_count_string, (x-5,y+5), cv2.FONT_HERSHEY_COMPLEX_SMALL, 0.5,  (0,0,0), 1)
             circle_count=circle_count+1
 
 
