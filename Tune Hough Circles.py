@@ -17,7 +17,7 @@ def ColorNameFromHSV(image,y,x):
         return"Unknown"
 
     for color in ColorTable:
-        print("Hue: %d ColorTableLower %d ColourTableUpper %d " % (hue, color[0], color[1]))
+        #print("Hue: %d ColorTableLower %d ColourTableUpper %d " % (hue, color[0], color[1]))
         if hue >= color[0] and hue <= color[1] :
             return color[2]
             break
@@ -156,7 +156,7 @@ for board in circleLog:
     for column in range(7):
         # Round the positions of the circles to integer values to map to x and y coordinates
         board = np.round(board[:]).astype("int")
-        print("Column number:", column)
+        #print("Column number:", column)
         #print("Column contents: ", board[column])
 
         # Order the 6 circles in this column by their summing their x and y coordinate. The x-coordinate with only
@@ -171,10 +171,12 @@ for board in circleLog:
             # Get BGR and HSV color value using row and column pixel value
             colorBGR = connect4BGR[y,x]
             colorHSV = connect4HSV[y,x]
-            print("Circle %d ColourBGR : %s ColorHSV : %s" % (circle_count, colorBGR, colorHSV))
             colorName=ColorNameFromHSV(connect4HSV,y,x)
-            print("Colour Name : %s" % colorName)
-            # Draw a circle around each detected circle based on it's detected centre coordinates and radius
+            if colorName in ["Red", "Yellow"]:
+                #print("Circle %d ColourBGR : %s ColorHSV : %s Colour Name %s" % (circle_count, colorBGR, colorHSV, colorName))
+                print("Circle %d is %s" % (circle_count, colorName))
+
+            #Draw a circle around each detected circle based on it's detected centre coordinates and radius
             # Then label each circle with a number
             cv2.circle(output, (x, y), r, (0, 0, 255), 2)
             circle_count_string="%s" % circle_count
