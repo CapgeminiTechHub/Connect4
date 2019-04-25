@@ -5,7 +5,8 @@ import numpy as np
 
 def ColorNameFromHSV(image,y,x):
     # Create a table of HSV colour values and associated name as a lookup table
-    ColorTable = [[14,23, "Orange"],[25,35, "Yellow"],[55,65,"Green"], [115,125,"Blue"], [175,5,"Red"]    ]
+    #ColorTable = [[14,23, "Orange"],[25,35, "Yellow"],[55,65,"Green"], [115,125,"Blue"], [175,5,"Red"]    ]
+    ColorTable = [[25, 35, "Yellow"], [175, 5, "Red"]]
 
     # get the HSV color
     colorHSV = image[y,x]
@@ -24,6 +25,7 @@ def ColorNameFromHSV(image,y,x):
      # Red is a special condition >175 but < than 5
     if hue >= 175 or hue <= 5:
         return("Red")
+    return("Unknown")
 
 # Read in colour image in BGR colour space
 connect4BGR = cv2.imread("images/connect4 image 5.jpg")
@@ -175,12 +177,16 @@ for board in circleLog:
             if colorName in ["Red", "Yellow"]:
                 #print("Circle %d ColourBGR : %s ColorHSV : %s Colour Name %s" % (circle_count, colorBGR, colorHSV, colorName))
                 print("Circle %d is %s" % (circle_count, colorName))
+                colorLetter = "("+colorName[0]+")"
+            else:
+                colorLetter="() "
 
             #Draw a circle around each detected circle based on it's detected centre coordinates and radius
             # Then label each circle with a number
             cv2.circle(output, (x, y), r, (0, 0, 255), 2)
-            circle_count_string="%s" % circle_count
-            cv2.putText(output, circle_count_string, (x-10,y+10), cv2.FONT_HERSHEY_SIMPLEX, 0.5,  (0,0,0), 2)
+
+            circle_count_string="%s%s" % (circle_count,colorLetter)
+            cv2.putText(output, circle_count_string, (x-5,y), cv2.FONT_HERSHEY_SIMPLEX, 0.5,  (0,0,0), 2)
             circle_count=circle_count+1
 
 
