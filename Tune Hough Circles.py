@@ -28,7 +28,7 @@ def ColorNameFromHSV(image,y,x):
     return("Unknown")
 
 # Read in colour image in BGR colour space
-connect4BGR = cv2.imread("images/connect4 image 5.jpg")
+connect4BGR = cv2.imread("images/connect4 image 2.jpg")
 #print(connect4BGR.shape)
 #print(connect4BGR.size)
 #print(connect4BGR.dtype)
@@ -61,8 +61,7 @@ circles = None
 # Don't like the way you have to hard code these values.
 # Makes the program very dependant on the size of the image taken
 
-minimum_circle_size = 13   #this is the range of possible circle in pixels you want to find
-maximum_circle_size = 18    #maximum possible circle size you're willing to find in pixels
+maximum_circle_size = 18  #maximum possible circle size you're willing to find in pixels
 
 guess_dp = 1.0
 
@@ -117,8 +116,8 @@ while guess_accumulator_array_threshold > 1 and breakout == False:
                     #print("CircleLog: ", circleLog)
                     #print("dp = %f" % guess_dp)
                     #print("param2 : %f" % guess_accumulator_array_threshold)
-                    #print("min radius :  %f" % (guess_radius-3))
-                    #print("max radius : %f" % (guess_radius+3))
+                    print("min radius :  %f" % (guess_radius-3))
+                    print("max radius : %f" % (guess_radius+3))
                     breakout = True
                 break
 
@@ -186,7 +185,7 @@ for board in circleLog:
             cv2.circle(output, (x, y), r, (0, 0, 255), 2)
 
             circle_count_string="%s%s" % (circle_count,colorLetter)
-            cv2.putText(output, circle_count_string, (x-5,y+5), cv2.FONT_HERSHEY_COMPLEX_SMALL, 0.5,  (0,0,0), 1)
+            cv2.putText(output, circle_count_string, (x-5,y+5), cv2.FONT_HERSHEY_PLAIN, 0.8,  (0,0,0), 2)
             circle_count=circle_count+1
 
 
