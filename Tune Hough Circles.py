@@ -187,6 +187,7 @@ for board in circleLog:
             else:
                 colorLetter=" "
 
+
             #Draw a circle around each detected circle based on it's detected centre coordinates and radius
             # Then label each circle with a number
             cv2.circle(output, (x, y), r, (0, 0, 255), 2)
