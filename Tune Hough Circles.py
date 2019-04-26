@@ -28,15 +28,22 @@ def ColorNameFromHSV(image,y,x):
     return("Unknown")
 
 # Read in colour image in BGR colour space
-connect4BGR = cv2.imread("images/connect4 image 5.jpg")
-#print(connect4BGR.shape)
+connect4BGR = cv2.imread("images/connect4 image 1.jpg")
+print(connect4BGR.shape)
 #print(connect4BGR.size)
 #print(connect4BGR.dtype)
 
 
 # Change size and resolution of image. Don't need a high resolution image for shape detection
-connect4BGR = cv2.resize(connect4BGR, (360, 640))
-#print(connect4BGR.shape)
+# Also need to ensure we resize the image and keep the aspect ration. We'll use the height to calculate the aspect ration
+aspectRatio = 360/connect4BGR.shape[1]
+print(aspectRatio)
+dimension = ( 360, int(connect4BGR.shape[0] * aspectRatio))
+print(dimension)
+
+connect4BGR = cv2.resize(connect4BGR,  dimension)
+#connect4BGR = cv2.resize(connect4BGR,  (360,640))
+print("shape after resize", connect4BGR.shape)
 #print(connect4BGR.size)
 #print(connect4BGR.dtype)
 
@@ -112,13 +119,13 @@ while guess_accumulator_array_threshold > 1 and breakout == False:
                     # and assign it to the new variable at the right point in the structure
                     circles2 = np.ndarray(shape=(1,42,3))
                     circles2[0] = sorted(circles[0], key=lambda x: (x[0], x[1]))
-                    print("Circles sorted: ", circles2)
+                    #print("Circles sorted: ", circles2)
                     circleLog.append(np.copy(circles2))
                     #print("CircleLog: ", circleLog)
-                    print("dp = %f" % guess_dp)
-                    print("param2 : %f" % guess_accumulator_array_threshold)
-                    print("min radius :  %f" % (guess_radius-3))
-                    print("max radius : %f" % (guess_radius+3))
+                    #print("dp = %f" % guess_dp)
+                    #print("param2 : %f" % guess_accumulator_array_threshold)
+                    #print("min radius :  %f" % (guess_radius-3))
+                    #print("max radius : %f" % (guess_radius+3))
                     breakout = True
                 break
 
@@ -134,7 +141,7 @@ while guess_accumulator_array_threshold > 1 and breakout == False:
 #Return the circleLog with the highest accumulator threshold
 
 # Check we've found some circles and if not exit the program
-print("circleLog: ", circleLog)
+#print("circleLog: ", circleLog)
 if len(circleLog) == 0 :
     print("No circles detected")
     exit(0)
